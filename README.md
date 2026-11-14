@@ -1,131 +1,123 @@
-# API REST de Livraria
+# 📚 API REST de Livraria
 
-<p>
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express" />
-  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
-  <img src="https://img.shields.io/badge/Mongoose-880000?style=for-the-badge&logo=mongoose&logoColor=white" alt="Mongoose" />
-  <img src="https://img.shields.io/badge/Nodemon-76D04B?style=for-the-badge&logo=nodemon&logoColor=white" alt="Nodemon" />
-</p>
+API REST para gerenciar o catálogo de uma livraria: cadastro, consulta, atualização e exclusão de **livros** e **autores**. Ao cadastrar um livro, basta informar o ID do autor, e a API busca os dados dele e os grava junto com o livro. Também é possível filtrar livros por editora.
 
-API REST para gerenciar o catálogo de uma livraria: cadastro, consulta, edição e remoção de livros e autores.
-Feita em Node.js com Express e MongoDB, com o código organizado em camadas (rotas, controllers e models).
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=flat&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
+![Mongoose](https://img.shields.io/badge/Mongoose-880000?style=flat&logo=mongoose&logoColor=white)
 
-## Funcionalidades
+---
 
-- **CRUD completo de livros**: listar, buscar por ID, cadastrar, atualizar e remover
-- **CRUD completo de autores**, com as mesmas operações
-- **Livro vinculado a um autor**: no cadastro você informa só o ID do autor, e a API busca e salva os dados dele junto com o livro
-- **Busca de livros por editora** via query string (`/livros/busca?editora=...`)
-- **Credenciais do banco fora do código**, carregadas de um arquivo `.env`
+## 🎯 Motivação
 
-## Tecnologias
+Este projeto foi feito para praticar a construção de APIs REST com Node.js, do jeito que se faz no back-end: rotas, regras de negócio e acesso a dados ficam em camadas separadas, há relacionamento entre entidades em um banco NoSQL e as credenciais ficam fora do código.
 
-| Tecnologia | Para que serve no projeto |
-| --- | --- |
+---
+
+## 🛠️ Tecnologias utilizadas
+
+| Tecnologia | Uso no projeto |
+|---|---|
 | **Node.js** (ES Modules) | Ambiente de execução |
-| **Express 4** | Servidor HTTP, rotas e leitura de JSON |
-| **MongoDB** | Banco de dados NoSQL, usando MongoDB Atlas |
-| **Mongoose 9** | Schemas, validação e consultas ao MongoDB |
-| **dotenv** | Carrega as variáveis de ambiente do `.env` |
-| **nodemon** | Reinicia o servidor a cada alteração durante o desenvolvimento |
+| **Express** | Servidor HTTP, rotas e leitura de JSON |
+| **MongoDB** | Banco de dados (local ou MongoDB Atlas) |
+| **Mongoose** | Schemas, validação e consultas ao banco |
+| **dotenv** | Carrega variáveis de ambiente do arquivo `.env` |
+| **nodemon** | Reinicia o servidor automaticamente durante o desenvolvimento |
 
-## Como rodar localmente
+---
 
-**Pré-requisitos:** Node.js 20.19 ou superior (exigido pelo Mongoose 9) e um banco MongoDB, seja local ou um cluster gratuito no [MongoDB Atlas](https://www.mongodb.com/atlas).
+## ✨ Funcionalidades principais
 
-```bash
-# 1. Clone o repositório
-git clone https://github.com/Marllonlp/api_node_express.git
-cd api_node_express
+- **CRUD completo** de livros e autores
+- **Livro ligado ao autor:** no cadastro do livro, informe só o ID do autor e a API completa os dados dele
+- **Busca por editora:** filtro de livros por query string
+- **Organização em camadas:** rotas, controllers e models separados
+- **Credenciais protegidas:** a conexão com o banco é configurada por variável de ambiente, sem nada no código
 
-# 2. Instale as dependências
-npm install
+---
+
+## 📁 Estrutura do projeto
+
+```
+api_node_express/
+├── src/
+│   ├── config/        # Conexão com o MongoDB
+│   ├── controllers/   # Lógica de cada endpoint
+│   ├── model/         # Schemas Mongoose (Livro e Autor)
+│   ├── routes/        # Definição das rotas
+│   └── app.js         # Configuração do Express
+├── server.js          # Ponto de entrada da aplicação
+├── package.json
+└── .gitignore
 ```
 
-Crie um arquivo `.env` na raiz do projeto:
+---
 
-```env
-DB_MONGO=mongodb+srv://USUARIO:SENHA@CLUSTER.mongodb.net/livraria
-```
+## 🔗 Endpoints
 
-> Se a senha tiver caracteres especiais (`@`, `#`, `/`), codifique-os em formato URL. Por exemplo, `@` vira `%40`.
-
-```bash
-# 3. Inicie o servidor
-npm run dev
-```
-
-A API fica disponível em `http://localhost:3000`.
-
-## Endpoints
+### Livros
 
 | Método | Rota | Descrição |
-| --- | --- | --- |
-| GET | `/livros` | Lista todos os livros |
-| GET | `/livros/busca?editora=NOME` | Lista os livros de uma editora |
-| GET | `/livros/:id` | Busca um livro pelo ID |
-| POST | `/livros` | Cadastra um livro |
-| PUT | `/livros/:id` | Atualiza um livro |
-| DELETE | `/livros/:id` | Remove um livro |
-| GET | `/autores` | Lista todos os autores |
-| GET | `/autores/:id` | Busca um autor pelo ID |
-| POST | `/autores` | Cadastra um autor |
-| PUT | `/autores/:id` | Atualiza um autor |
-| DELETE | `/autores/:id` | Remove um autor |
+|---|---|---|
+| `GET` | `/livros` | Lista todos os livros |
+| `GET` | `/livros/busca?editora=NOME` | Busca livros por editora |
+| `GET` | `/livros/:id` | Busca um livro pelo ID |
+| `POST` | `/livros` | Cadastra um livro (com o ID do autor) |
+| `PUT` | `/livros/:id` | Atualiza um livro |
+| `DELETE` | `/livros/:id` | Remove um livro |
 
-<details>
-<summary><strong>Exemplo: cadastrar um autor e um livro</strong></summary>
+### Autores
 
-```bash
-# Cadastra o autor
-curl -X POST http://localhost:3000/autores \
-  -H "Content-Type: application/json" \
-  -d '{ "nome": "J. R. R. Tolkien", "nacionalidade": "britânica" }'
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/autores` | Lista todos os autores |
+| `GET` | `/autores/:id` | Busca um autor pelo ID |
+| `POST` | `/autores` | Cadastra um autor |
+| `PUT` | `/autores/:id` | Atualiza um autor |
+| `DELETE` | `/autores/:id` | Remove um autor |
 
-# Cadastra o livro, usando o _id retornado acima
-curl -X POST http://localhost:3000/livros \
-  -H "Content-Type: application/json" \
-  -d '{
-    "titulo": "O Hobbit",
-    "editora": "HarperCollins",
-    "preco": 40,
-    "paginas": 310,
-    "autor": "ID_DO_AUTOR"
-  }'
-```
+---
 
-Resposta `201 Created`:
+## 🚀 Como rodar localmente
 
-```json
-{
-  "message": "Criado com sucesso",
-  "livro": {
-    "_id": "665f1d9a8a1b2c3d4e5f6790",
-    "titulo": "O Hobbit",
-    "editora": "HarperCollins",
-    "preco": 40,
-    "paginas": 310,
-    "autor": {
-      "_id": "665f1c2e8a1b2c3d4e5f6789",
-      "nome": "J. R. R. Tolkien",
-      "nacionalidade": "britânica"
-    }
-  }
-}
-```
+### Pré-requisitos
 
-</details>
+- [Node.js](https://nodejs.org/) **20.19 ou superior** (exigido pelo Mongoose 9)
+- Um banco **MongoDB**, local ou no [MongoDB Atlas](https://www.mongodb.com/atlas)
 
-## Estrutura
+### Passo a passo
 
-```
-src/
-├── config/        # Conexão com o MongoDB
-├── controllers/   # Lógica de cada endpoint
-├── model/         # Schemas do Mongoose (Livro, Autor)
-├── routes/        # Definição das rotas
-└── app.js         # Configuração do Express
-server.js          # Ponto de entrada
-```
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/Marllonlp/api_node_express.git
+   cd api_node_express
+   ```
+
+2. **Instale as dependências**
+   ```bash
+   npm install
+   ```
+
+3. **Configure as variáveis de ambiente**
+
+   Crie um arquivo `.env` na raiz do projeto:
+   ```env
+   DB_MONGO=sua_string_de_conexao_do_mongodb
+   ```
+   > ⚠️ Se a senha tiver caracteres especiais (`@`, `#`, `%` etc.), ela precisa estar codificada para URL (URL-encoded).
+
+4. **Inicie o servidor**
+   ```bash
+   npm run dev
+   ```
+
+   A API ficará disponível em **http://localhost:3000**.
+
+---
+
+## 👤 Autor
+
+**Marlon Neves**
+[LinkedIn](https://www.linkedin.com/in/marlon-neves6/) · [GitHub](https://github.com/Marllonlp)
